@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'> 
+
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<param name="Encoding" value="UTF-8"/>
+		<layout class="org.apache.log4j.EnhancedPatternLayout">
+			<param name="ConversionPattern" value="%p|%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}|%m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="FHIR_SPLUNK" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Encoding" value="UTF-8"/>
+		<param name="ImmediateFlush" value="true"/>
+		<param name="Append" value="true"/>
+		<param name="File" value="fhir_splunk.log"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+		<layout class="org.apache.log4j.EnhancedPatternLayout">
+			<param name="ConversionPattern" value="%m%n"/>
+		</layout>
+	</appender>
+	
+	<logger name="fhir" additivity="false">
+		<level value="INFO"/>
+		<appender-ref ref="FHIR_SPLUNK"/>
+	</logger>
+	
+	<logger name="fhir.events">
+		<level value="INHERITED"/>
+	</logger>
+	
+	<logger name="co.com.andruweber.log4jtest.Log4jTestServlet">
+		<level value="INHERITED"/>
+		<appender-ref ref="FHIR_SPLUNK"/>
+	</logger>
+	
+	<root>
+		<level value="WARN"/>
+		<appender-ref ref="STDOUT"/>
+	</root>
+
+</log4j:configuration>
